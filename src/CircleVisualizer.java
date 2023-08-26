@@ -29,6 +29,7 @@ public class CircleVisualizer {
     private final Circle fullCircle;
 
     // Another pane is used to put all the lines and the circle into.
+
     private final Pane drawingPane;
 
 

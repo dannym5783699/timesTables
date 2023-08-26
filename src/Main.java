@@ -20,6 +20,7 @@ public class Main extends Application {
      * the application scene can be set.
      * Applications may create other stages, if needed, but they will not be
      * primary stages.
+     *
      */
     @Override
     public void start(Stage primaryStage){
