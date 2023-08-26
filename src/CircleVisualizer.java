@@ -32,6 +32,9 @@ public class CircleVisualizer {
 
     private final Pane drawingPane;
 
+    private int currentPoint;
+
+
 
     /**
      * Sets up the circle outline and the Pane.
@@ -46,8 +49,8 @@ public class CircleVisualizer {
         fullCircle.setStroke(Color.DARKSALMON);
         drawingPane.getChildren().add(fullCircle);
         locationScene.setCenter(drawingPane);
-        numPoints = 10;
-        multiplier = 2;
+        numPoints = 360;
+        multiplier = 1;
     }
 
 
@@ -80,12 +83,42 @@ public class CircleVisualizer {
         Line line = new Line(startX, startY, endX, endY);
         line.setFill(Color.BLACK);
         this.drawingPane.getChildren().add(line);
+        this.setPoint((currentPoint+1)%numPoints);
 
     }
 
+    /**
+     * Gets the current point.
+     * @return returns the current point.
+     */
+    public int getPoint(){
+        return this.currentPoint;
+    }
 
+    /**
+     * Sets the current point in the circle visualizer.
+     * @param point Requires a point to set.
+     */
+    public void setPoint(int point){
+        this.currentPoint = point;
+    }
 
+    /**
+     * Gets the current multiplier value.
+     * @return returns the multiplier value as a double.
+     */
+    public double getMultiplier() {
+        return multiplier;
+    }
 
+    public void setMultiplier(double newMult){
+        multiplier = newMult;
+    }
+
+    public void clear(){
+        drawingPane.getChildren().clear();
+        drawingPane.getChildren().add(fullCircle);
+    }
 
 
 }
