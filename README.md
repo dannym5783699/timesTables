@@ -1,4 +1,4 @@
-- You should be able to just run from main for this to work.
+- You should be able to just run from main for this to work. CLick start visualization to begin.
 - Once running you can set the controls and then click start visualization on the right.
 - There is not yet any clear testing other than changing the variables and printing.
 - Enter key must be pushed when a times table or points number is entered to a text box.
