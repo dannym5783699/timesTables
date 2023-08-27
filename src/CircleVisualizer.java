@@ -24,6 +24,7 @@ public class CircleVisualizer {
 
     //Need to know what multiplier to use and can be decimal.
     private double multiplier;
+    private double multIncrement = .1;
 
     //Has a full outside circle.
     private final Circle fullCircle;
@@ -33,6 +34,10 @@ public class CircleVisualizer {
     private final Pane drawingPane;
 
     private int currentPoint;
+
+    private long intervalTime;
+
+    private boolean pause = true;
 
 
 
@@ -44,13 +49,13 @@ public class CircleVisualizer {
     public CircleVisualizer(BorderPane locationScene){
         this.drawingPane = new Pane();
         this.locationScene = locationScene;
-        fullCircle = new Circle(600, 400, 200);
+        fullCircle = new Circle(500, 400, 300);
         fullCircle.setFill(null);
         fullCircle.setStroke(Color.DARKSALMON);
         drawingPane.getChildren().add(fullCircle);
         locationScene.setCenter(drawingPane);
         numPoints = 360;
-        multiplier = 1;
+        multiplier = 2;
     }
 
 
@@ -67,23 +72,30 @@ public class CircleVisualizer {
 
     /**
      * Draws a line from the current point to the next point using the multiplier.
-     * @param currentPoint requires a current point around the circle.
      */
-    public void drawLine(int currentPoint){
-        final double nextPoint = (multiplier*currentPoint)%numPoints;
-        //negative times radians plus pi for next angle starting left side.
-        final double nextAng = findAngle(nextPoint);
-        final double currentAng = findAngle(currentPoint);
+    public void drawLines(){
 
-        //Find coordinates.
-        final double startX = (Math.cos(currentAng) * fullCircle.getRadius()) + fullCircle.getCenterX();
-        final double startY = (-1 *Math.sin(currentAng) * fullCircle.getRadius()) + fullCircle.getCenterY();
-        final double endX = (Math.cos(nextAng) * fullCircle.getRadius()) + fullCircle.getCenterX();
-        final double endY = (-1 *Math.sin(nextAng) * fullCircle.getRadius()) + fullCircle.getCenterY();
-        Line line = new Line(startX, startY, endX, endY);
-        line.setFill(Color.BLACK);
-        this.drawingPane.getChildren().add(line);
-        this.setPoint((currentPoint+1)%numPoints);
+        while(true && !pause) {
+            final double nextPoint = (multiplier * this.currentPoint) % numPoints;
+            //negative times radians plus pi for next angle starting left side.
+            final double nextAng = findAngle(nextPoint);
+            final double currentAng = findAngle(this.currentPoint);
+
+            //Find coordinates.
+            final double startX = (Math.cos(currentAng) * fullCircle.getRadius()) + fullCircle.getCenterX();
+            final double startY = (-1 * Math.sin(currentAng) * fullCircle.getRadius()) + fullCircle.getCenterY();
+            final double endX = (Math.cos(nextAng) * fullCircle.getRadius()) + fullCircle.getCenterX();
+            final double endY = (-1 * Math.sin(nextAng) * fullCircle.getRadius()) + fullCircle.getCenterY();
+            Line line = new Line(startX, startY, endX, endY);
+            line.setFill(Color.BLACK);
+            this.drawingPane.getChildren().add(line);
+            this.setPoint((this.currentPoint + 1) % numPoints);
+            if (this.currentPoint == (numPoints - 1)) {
+                multiplier = multiplier + multIncrement;
+                break;
+            }
+        }
+
 
     }
 
@@ -111,6 +123,10 @@ public class CircleVisualizer {
         return multiplier;
     }
 
+    /**
+     * Set the multiplier
+     * @param newMult
+     */
     public void setMultiplier(double newMult){
         multiplier = newMult;
     }
@@ -118,6 +134,26 @@ public class CircleVisualizer {
     public void clear(){
         drawingPane.getChildren().clear();
         drawingPane.getChildren().add(fullCircle);
+    }
+
+    public long getIntervalTime(){
+        return intervalTime;
+    }
+
+    public void setIntervalTime(long intervalTime){
+        this.intervalTime = intervalTime;
+    }
+
+    public boolean isPaused(){
+        return pause;
+    }
+
+    public void setPause(boolean pause){
+        this.pause  = pause;
+    }
+
+    public void setMultIncrement(double newIncrement){
+        multIncrement = newIncrement;
     }
 
 
