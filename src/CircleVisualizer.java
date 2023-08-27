@@ -11,6 +11,8 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
+import java.util.Random;
+
 /**
  * A Circle Visualizer has a BorderPane and the number of points around the circle to start a line from.
  * It also has a Circle and the multiplier for points.
@@ -30,14 +32,20 @@ public class CircleVisualizer {
     private final Circle fullCircle;
 
     // Another pane is used to put all the lines and the circle into.
-
     private final Pane drawingPane;
 
+    //Current point
     private int currentPoint;
 
+    //Interval between each times table.
     private long intervalTime;
 
+    //Is this visual paused
     private boolean pause = true;
+
+
+    //Color to draw with.
+    private Color drawColor = Color.BLACK;
 
 
 
@@ -54,7 +62,7 @@ public class CircleVisualizer {
         fullCircle.setStroke(Color.DARKSALMON);
         drawingPane.getChildren().add(fullCircle);
         locationScene.setCenter(drawingPane);
-        numPoints = 360;
+        numPoints = 500;
         multiplier = 2;
     }
 
@@ -87,10 +95,19 @@ public class CircleVisualizer {
             final double endX = (Math.cos(nextAng) * fullCircle.getRadius()) + fullCircle.getCenterX();
             final double endY = (-1 * Math.sin(nextAng) * fullCircle.getRadius()) + fullCircle.getCenterY();
             Line line = new Line(startX, startY, endX, endY);
-            line.setFill(Color.BLACK);
+            fullCircle.setStroke(drawColor);
+            line.setFill(Color.RED);
+            line.setStroke(drawColor);
             this.drawingPane.getChildren().add(line);
             this.setPoint((this.currentPoint + 1) % numPoints);
+
+            //Change color and increment at the end of the circle.
             if (this.currentPoint == (numPoints - 1)) {
+                Random colorPick = new Random();
+                double redC = colorPick.nextDouble();
+                double greenC = colorPick.nextDouble();
+                double blueC = colorPick.nextDouble();
+                drawColor = new Color(redC, greenC, blueC, 1);
                 multiplier = multiplier + multIncrement;
                 break;
             }
@@ -125,36 +142,66 @@ public class CircleVisualizer {
 
     /**
      * Set the multiplier
-     * @param newMult
+     * @param newMult the new multiplier.
      */
     public void setMultiplier(double newMult){
         multiplier = newMult;
     }
 
+    /**
+     * Clears the lines from the pane.
+     */
     public void clear(){
         drawingPane.getChildren().clear();
         drawingPane.getChildren().add(fullCircle);
     }
 
+    /**
+     * Gets the times between each times table circle.
+     * @return the interval between each circle in milliseconds.
+     */
     public long getIntervalTime(){
         return intervalTime;
     }
 
+    /**
+     * Sets the times between circle drawings.
+     * @param intervalTime delay time in milliseconds
+     */
     public void setIntervalTime(long intervalTime){
         this.intervalTime = intervalTime;
     }
 
+    /**
+     * Checks if the visualization is paused.
+     * @return true if paused and false if not paused.
+     */
     public boolean isPaused(){
         return pause;
     }
 
+    /**
+     * Changes if the visualization is paused or not.
+     * @param pause boolean value to change to, true if setting paused and false if not.
+     */
     public void setPause(boolean pause){
         this.pause  = pause;
     }
 
+    /**
+     * Changes the times table increment.
+     * @param newIncrement requires a double to change the increment to.
+     */
     public void setMultIncrement(double newIncrement){
         multIncrement = newIncrement;
     }
 
+    /**
+     * Sets the number of points on the circle.
+     * @param numberOfPoints New number of points on teh circle.
+     */
+    public void setNumPoints(int numberOfPoints){
+        this.numPoints = numberOfPoints;
+    }
 
 }
