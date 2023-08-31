@@ -2,3 +2,5 @@
 - Once running you can set the controls and then click start visualization on the right.
 - There is not yet any clear testing other than changing the variables and printing.
 - Enter key must be pushed when a times table or points number is entered to a text box.
+- When pressing enter on times table field or the number of points field the game is paused.
+- Sometimes the incorrect circle is shown when clicking enter on number of points and is fixed by typing enter again.
