@@ -206,6 +206,10 @@ public class Main extends Application {
                             throw new NumberFormatException();
                         }
                         visualization.setMultiplier(Double.parseDouble(timesTableChanger.getText()));
+                        visualization.clear();
+                        visualization.setPause(true);
+                        visualization.drawLines();
+                        pauseButton.setText("Resume");
                     } catch (NumberFormatException e) {
                         System.out.println("Invalid Number given");
                     }
@@ -236,6 +240,8 @@ public class Main extends Application {
             @Override
             public void handle(KeyEvent event) {
                 if(event.getCode().equals(KeyCode.ENTER)){
+                    visualization.setPause(true);
+                    pauseButton.setText("Resume");
                     try{
                         if(numPointsField.getText().length() > 4){
                             throw new NumberFormatException();
@@ -246,6 +252,11 @@ public class Main extends Application {
                             throw new NumberFormatException();
                         }
                         visualization.setNumPoints(newVal);
+                        visualization.clear();
+                        visualization.setPause(true);
+                        visualization.setPoint(0);
+                        visualization.drawLines();
+                        pauseButton.setText("Resume");
                     }catch(NumberFormatException e){
                         System.out.println("Invalid number given");
                     }

@@ -83,7 +83,7 @@ public class CircleVisualizer {
      */
     public void drawLines(){
 
-        while(true && !pause) {
+        while(true) {
             final double nextPoint = (multiplier * this.currentPoint) % numPoints;
             //negative times radians plus pi for next angle starting left side.
             final double nextAng = findAngle(nextPoint);
@@ -108,7 +108,10 @@ public class CircleVisualizer {
                 double greenC = colorPick.nextDouble();
                 double blueC = colorPick.nextDouble();
                 drawColor = new Color(redC, greenC, blueC, 1);
-                multiplier = multiplier + multIncrement;
+                if(!isPaused()) {
+                    multiplier = multiplier + multIncrement;
+                }
+
                 break;
             }
         }
